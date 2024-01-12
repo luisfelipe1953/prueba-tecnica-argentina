@@ -25,12 +25,8 @@ class BtcUsdRepository extends BaseRepository implements BtcUsdRepositoryInterfa
     public function convertUsdToBitcoin(float $usdAmount): float
     {
         $priceUSD = $this->getBitcoinPrice();
-
-        $satoshi = 0.00000001;
-        $subtotal = $priceUSD * $satoshi;
-
-        $bbit = $usdAmount / $subtotal;
-        $result = $bbit / 100000000;
+        
+        $result = $usdAmount / ($priceUSD * 0.00000001) / 100000000;
 
         $this->storeQuery($usdAmount, $result, $priceUSD);
 

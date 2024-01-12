@@ -16,5 +16,5 @@ use App\Http\Controllers\QueryBitcoinAndUsdController;
 */
 
 Route::post('/query/usd-to-btc', [QueryBitcoinAndUsdController::class, 'QueryDollarToBitcoin']);
-Route::post('/query/usd-to-btc', [QueryBitcoinAndUsdController::class, 'QueryDollarToBitcoin']);
+Route::post('/query/btc-to-usd', [QueryBitcoinAndUsdController::class, 'QueryBitcoinToDollar']);
 Route::get('/price-bitcoin', [QueryBitcoinAndUsdController::class, 'getPriceBitcoin']);

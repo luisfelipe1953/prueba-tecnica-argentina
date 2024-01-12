@@ -1,8 +1,15 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import useQueryUsdBtc from "../composables/index.js";
 
-const { getUsdToBitcoin, getBitcoinToUsd, errors, result } = useQueryUsdBtc();
+const {
+  getUsdToBitcoin,
+  getBitcoinToUsd,
+  getPriceBitcoin,
+  errors,
+  result,
+  priceBitcoin,
+} = useQueryUsdBtc();
 
 const form = ref({
   usd_amount: "",
@@ -55,6 +62,18 @@ const handleInputBtc = () => {
     }
   }, 500);
 };
+
+const fetchData = async () => {
+  await getPriceBitcoin();
+  console.log(priceBitcoin.value);
+};
+
+onMounted(() => {
+  fetchData();
+  // Llama a fetchData cada 30 segundos
+  const fetchDataInterval = setInterval(fetchData, 30000);
+  onUnmounted(() => clearInterval(fetchDataInterval));
+});
 </script>
 <template>
   <div class="h-screen flex items-center justify-center">
@@ -79,7 +98,7 @@ const handleInputBtc = () => {
             type="number"
             id="USD"
             v-model="form.usd_amount"
-            @input="handleInputUsd"
+            @keydown="handleInputUsd"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="USD"
           />
@@ -94,7 +113,7 @@ const handleInputBtc = () => {
             type="number"
             id="BTC"
             v-model="form.btc_amount"
-            @input="handleInputBtc"
+            @keydown="handleInputBtc"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="BTC"
           />
@@ -122,6 +141,9 @@ const handleInputBtc = () => {
           ></path>
         </svg>
         Cargando...
+      </div>
+      <div>
+        <p>1 BTC = ${{ priceBitcoin }}</p>
       </div>
     </form>
   </div>

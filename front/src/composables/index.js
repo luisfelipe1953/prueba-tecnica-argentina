@@ -4,6 +4,7 @@ axios.defaults.baseURL = "http://127.0.0.1:8000/api/";
 
 export default function useQueryUsdBtc() {
   const result = ref({});
+  const priceBitcoin = ref([]);
   const errors = ref({});
 
   const getUsdToBitcoin = async (form) => {
@@ -17,6 +18,12 @@ export default function useQueryUsdBtc() {
       }
     }
   };
+
+  const getPriceBitcoin = async () => {
+    const response = await axios.get("price-bitcoin");
+    priceBitcoin.value = response.data;
+  };
+
   const getBitcoinToUsd = async (form) => {
     errors.value = "";
     try {
@@ -31,6 +38,8 @@ export default function useQueryUsdBtc() {
 
   return {
     result,
+    priceBitcoin,
+    getPriceBitcoin,
     getUsdToBitcoin,
     getBitcoinToUsd,
     errors,

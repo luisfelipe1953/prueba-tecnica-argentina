@@ -35,4 +35,13 @@ class QueryBitcoinAndUsdController extends Controller
             return $this->response->catch($e->getMessage());
         }
     }
+    
+    public function getPriceBitcoin(): float | JsonResponse
+    {
+        try {
+            return $this->bitcoinRepository->getBitcoinPrice();
+        } catch (\Exception $e) {
+            return $this->response->catch($e->getMessage());
+        }
+    }
 }

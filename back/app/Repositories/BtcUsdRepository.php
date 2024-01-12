@@ -53,7 +53,7 @@ class BtcUsdRepository extends BaseRepository implements BtcUsdRepositoryInterfa
     /**
      * obtiene el precio del bitcoin en dolares
      */
-    protected function getBitcoinPrice(): float
+    public function getBitcoinPrice(): float
     {
         $http = new Http();
         $response = $http->get($this->apiUrl);
